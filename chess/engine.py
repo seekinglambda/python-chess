@@ -1654,13 +1654,13 @@ def _parse_uci_info(arg: str, root_board: chess.Board, selector: Info = INFO_ALL
     info: InfoDict = {}
     if not selector:
         return info
-
+    info["string"] = ""
     tokens = arg.split(" ")
     while tokens:
         parameter = tokens.pop(0)
 
         if parameter == "string":
-            info["string"] = " ".join(tokens)
+            info["string"] = info["string"] + "\n" + " ".join(tokens)
             break
         elif parameter in ["depth", "seldepth", "nodes", "multipv", "currmovenumber", "hashfull", "nps", "tbhits", "cpuload"]:
             try:
