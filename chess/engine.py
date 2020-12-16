@@ -1660,8 +1660,7 @@ def _parse_uci_info(arg: str, root_board: chess.Board, selector: Info = INFO_ALL
         parameter = tokens.pop(0)
 
         if parameter == "string":
-            info["string"] = info["string"] + "\n" + " ".join(tokens)
-            break
+            info["string"] += " ".join(tokens) + "\n"
         elif parameter in ["depth", "seldepth", "nodes", "multipv", "currmovenumber", "hashfull", "nps", "tbhits", "cpuload"]:
             try:
                 info[parameter] = int(tokens.pop(0))  # type: ignore
@@ -1739,6 +1738,8 @@ def _parse_uci_info(arg: str, root_board: chess.Board, selector: Info = INFO_ALL
                 info["wdl"] = PovWdl(Wdl(int(tokens.pop(0)), int(tokens.pop(0)), int(tokens.pop(0))), root_board.turn)
             except (ValueError, IndexError):
                 LOGGER.error("Exception parsing wdl from info: %r", arg)
+        elif parameter == 'bestmove':
+            break
 
     return info
 
