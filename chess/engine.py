@@ -1654,13 +1654,12 @@ def _parse_uci_info(arg: str, root_board: chess.Board, selector: Info = INFO_ALL
     info: InfoDict = {}
     if not selector:
         return info
-    info["string"] = ""
     tokens = arg.split(" ")
     while tokens:
         parameter = tokens.pop(0)
-
         if parameter == "string":
-            info["string"] += " ".join(tokens) + "\n"
+            info["string"] = " ".join(tokens)
+            break
         elif parameter in ["depth", "seldepth", "nodes", "multipv", "currmovenumber", "hashfull", "nps", "tbhits", "cpuload"]:
             try:
                 info[parameter] = int(tokens.pop(0))  # type: ignore
@@ -2433,13 +2432,16 @@ class AnalysisResult:
         self._seen_kork = False
         self._finished: asyncio.Future[BestMove] = asyncio.Future()
         self.multipv = [{}]
+        self.string = ""
 
     def post(self, info: InfoDict) -> None:
         # Empty dictionary reserved for kork.
         if not info:
             return
-
+        string = info.get("string", "")
+        self.string += string
         multipv = info.get("multipv", 1)
+        info["string"] = self.string
         while len(self.multipv) < multipv:
             self.multipv.append({})
         self.multipv[multipv - 1].update(info)
