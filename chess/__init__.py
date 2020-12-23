@@ -585,7 +585,7 @@ class BaseBoard:
         self.occupied = BB_RANK_1 | BB_RANK_2 | BB_RANK_7 | BB_RANK_8
 
     def __hash__(self):
-        return (self.pawns & self.occupied_co[WHITE],
+        return hash((self.pawns & self.occupied_co[WHITE],
                 self.pawns & self.occupied_co[BLACK],
                 self.knights & self.occupied_co[WHITE],
                 self.knights & self.occupied_co[BLACK],
@@ -596,7 +596,7 @@ class BaseBoard:
                 self.queens & self.occupied_co[WHITE],
                 self.queens & self.occupied_co[BLACK],
                 self.kings & self.occupied_co[WHITE],
-                self.kings & self.occupied_co[BLACK])
+                self.kings & self.occupied_co[BLACK]))
 
 
     def reset_board(self) -> None:
@@ -1512,7 +1512,7 @@ class Board(BaseBoard):
             self.set_fen(fen)
 
     def __hash__(self):
-        return super.__hash__ + self.turn + hash(self.ep_square)
+        return super(Board, self).__hash__() + self.turn + hash(self.ep_square)
 
     @property
     def legal_moves(self) -> LegalMoveGenerator:
