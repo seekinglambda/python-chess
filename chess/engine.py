@@ -2439,7 +2439,8 @@ class AnalysisResult:
         if not info:
             return
         string = info.get("string", "")
-        self.string += string
+        if len(string) > 0:
+            self.string += string + "\n"
         multipv = info.get("multipv", 1)
         info["string"] = self.string
         while len(self.multipv) < multipv:

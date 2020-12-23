@@ -584,6 +584,22 @@ class BaseBoard:
         self.occupied_co[BLACK] = BB_RANK_7 | BB_RANK_8
         self.occupied = BB_RANK_1 | BB_RANK_2 | BB_RANK_7 | BB_RANK_8
 
+    def __hash__(self):
+        return (self.pawns & self.occupied_co[WHITE],
+                self.pawns & self.occupied_co[BLACK],
+                self.knights & self.occupied_co[WHITE],
+                self.knights & self.occupied_co[BLACK],
+                self.bishops & self.occupied_co[WHITE],
+                self.bishops & self.occupied_co[BLACK],
+                self.rooks & self.occupied_co[WHITE],
+                self.rooks & self.occupied_co[BLACK],
+                self.queens & self.occupied_co[WHITE],
+                self.queens & self.occupied_co[BLACK],
+                self.kings & self.occupied_co[WHITE],
+                self.kings & self.occupied_co[BLACK],
+
+
+
     def reset_board(self) -> None:
         """Resets pieces to the starting position."""
         self._reset_board()
@@ -1495,6 +1511,8 @@ class Board(BaseBoard):
             self.reset()
         else:
             self.set_fen(fen)
+    def __hash__(self):
+        return super.__hash__ + self.turn + hash(self.ep_square)
 
     @property
     def legal_moves(self) -> LegalMoveGenerator:
