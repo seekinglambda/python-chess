@@ -596,8 +596,7 @@ class BaseBoard:
                 self.queens & self.occupied_co[WHITE],
                 self.queens & self.occupied_co[BLACK],
                 self.kings & self.occupied_co[WHITE],
-                self.kings & self.occupied_co[BLACK],
-
+                self.kings & self.occupied_co[BLACK])
 
 
     def reset_board(self) -> None:
@@ -1511,6 +1510,7 @@ class Board(BaseBoard):
             self.reset()
         else:
             self.set_fen(fen)
+
     def __hash__(self):
         return super.__hash__ + self.turn + hash(self.ep_square)
 
